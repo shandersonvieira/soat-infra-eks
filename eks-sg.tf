@@ -18,6 +18,17 @@ resource "aws_security_group" "eks_nodes_sg" {
     self        = true # Permite tráfego originado do próprio SG
   }
 
+  # Permite tráfego vindo de QUALQUER LUGAR DENTRO da VPC.
+  # Isso permite que o Load Balancer (que está na VPC) se conecte aos nós.
+  ingress {
+    description = "Allow traffic from within the VPC (e.g., from Load Balancer)"
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    # Usa o bloco CIDR da sua VPC como fonte, lido do estado remoto da rede.
+    cidr_blocks = [data.terraform_remote_state.network.outputs.vpc_cidr_block]
+  }
+
   # Regra de Saída (Egress):
   # Permite que os nós acessem a internet através do NAT Gateway para baixar imagens, etc.
   egress {
