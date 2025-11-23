@@ -2,7 +2,7 @@
 data "terraform_remote_state" "network" {
   backend = "s3"
   config = {
-    bucket = "soat-tfstate-bucket"
+    bucket = "sh-soat-tfstate-bucket"
     key    = "infra/terraform.tfstate"
     region = var.region_default
   }
@@ -20,7 +20,7 @@ data "aws_eks_cluster_auth" "auth" {
 data "terraform_remote_state" "database" {
   backend = "s3"
   config = {
-    bucket = "soat-tfstate-bucket"
+    bucket = "sh-soat-tfstate-bucket"
     key    = "database/terraform.tfstate"
     region = var.region_default
   }
